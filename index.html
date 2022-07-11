@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+
+        box-sizing: border-box;
+        text-align: center;
+    }
+
+    body {
+        background-color: aquamarine;
+
+
+    }
+
+    section {
+        width: 60%;
+        margin: 0 auto;
+        display: flex;
+        height: 60vh;
+        align-items: center;
+    }
+
+    .cell {
+        width: 150px;
+        height: 150px;
+        margin: 0 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 15px;
+        background-color: beige;
+
+    }
+
+    .cell h1 {
+
+        font-size: 32px;
+
+
+    }
+
+
+
+    button {
+        padding: 30px;
+    }
+
+    .scale {
+        background-color: rgb(128, 0, 0);
+        color: wheat;
+        animation: beat 1s infinite;
+        transition: 1s all ease-in-out;
+
+    }
+
+    .finish {
+        background-color: green;
+        color: wheat;
+    }
+
+    @keyframes beat {
+        to {
+            transform: scale(1.2);
+        }
+    }
+
+    @media only screen and (max-width: 600px) {
+        section {
+            width: 90%;
+            margin: 0 auto;
+            display: flex;
+            height: 60vh;
+            align-items: center;
+        }
+
+        .cell {
+            width: 35px;
+            height: 35px;
+            margin: 0 2px;
+            background-color: beige;
+            border-radius: 0;
+        }
+
+        .cell h1 {
+
+            font-size: 16px;
+
+
+        }
+
+        button {
+            padding: 10px;
+        }
+
+        .scale {
+            background-color: rgb(128, 0, 0);
+            color: wheat;
+            animation: beat 1s infinite;
+            transition: 1s all ease-in-out;
+
+        }
+
+        .finish {
+            background-color: green;
+            color: wheat;
+        }
+    }
+</style>
+
+<body>
+    <section>
+
+
+    </section>
+    <button onclick="startSort()">
+        <h1>Start</h1>
+    </button>
+</body>
+<script>
+    let btn = document.getElementsByTagName('button')[0]
+    const arrEl = []
+    const sortedArray = []
+    for (let i = 0; i < 7; i++) {
+        const section = document.querySelector('section')
+        arrEl.push(Math.floor(Math.random() * (-10, 20) - 10))
+        sortedArray.push(arrEl[i])
+        section.innerHTML += `<div class="cell "><h1 style="width: 100px;">${arrEl[i]}</h1></div>`
+
+    }
+
+    sortedArray.sort((a, b) => { return a - b })
+    function startSort() {
+        let inter = setInterval(() => {
+            for (let i = 0; i < arrEl.length; i++) {
+                printArray()
+                if (i + 1 <= arrEl.length && arrEl[i] > arrEl[i + 1]) {
+                    temp = arrEl[i]
+                    arrEl[i] = arrEl[i + 1]
+                    arrEl[i + 1] = temp
+                    printArray()
+                }
+
+            }
+            if (arrayEquals(sortedArray, arrEl)) {
+                clearInterval(inter)
+                printSuccsess()
+            }
+
+        }, 1000);
+    }
+    function printArray() {
+
+        for (let i = 0; i < arrEl.length; i++) {
+            cells = document.querySelectorAll('.cell')[i]
+            cells.innerHTML = `<h1 style="width: 100px;">${arrEl[i]}<h1>`
+            cells.classList.add('scale')
+        }
+
+    }
+    function printSuccsess() {
+        for (let i = 0; i < arrEl.length; i++) {
+            cells = document.querySelectorAll('.cell')[i]
+            cells.classList.remove('scale')
+            cells.classList.add('finish')
+        }
+    }
+    function arrayEquals(a, b) {
+        return Array.isArray(a) &&
+            Array.isArray(b) &&
+            a.length === b.length &&
+            a.every((val, index) => val === b[index]);
+    }
+
+
+
+</script>
+
+</html>
